@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <!-- <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" /> -->
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+
+        <link rel="stylesheet" href="css/themes/clickPlate.min.css" />
+        <link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
+        <script src="css/jquery-1.11.1.min.js"></script>
+
+        <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+        <META HTTP-EQUIV="Expires" CONTENT="-1">
+
+        <link href="plugins/starrating/rateit.css" rel="stylesheet" type="text/css">
+        <script src="plugins/starrating/jquery.rateit.js"></script>
+
+        <title>clickPlate</title>
+        <style>
+            .pagetitle{
+                font-weight: bold;
+            }
+            .ui-icon-cart {
+                background-image: url(img/icons/cart-20.png) !important;
+                background-repeat: no-repeat;
+                background-position:center left;
+            }
+        </style>
+    </head>
+    <body>
+        <div data-role="page" data-theme="a" id="index">
+            <!-- MENU -->
+            <div data-role="panel" id="myPanel" data-position="right"  data-display="overlay">
+            </div>
+            <!-- HEADER -->
+            <div data-role="header" data-position="fixed">
+                <a href="home.html" data-icon="home" data-iconpos="notext" id="glb_home" data-ajax="false"></a>
+                <h1 class="pagetitle"></h1>
+                <a href="#myPanel" data-icon="bars" class="ui-btn-right" data-iconpos="notext" id="panelTrgr"></a>
+                <div data-role="navbar" data-iconpos="top">
+                    <ul style="border:1px black solid;">
+                        <li><a href="info.html" data-icon="info" data-ajax="false">Info</a></li>
+                        <!-- <li><a href="menu.html" data-icon="bullets" data-ajax="false">Menu</a></li> -->
+                        <li><a href="services.html" data-icon="bullets" data-ajax="false">Services</a></li>
+                        <li><a href="location.html" data-icon="location" data-ajax="false">Location</a></li>
+                        <li><a href="reviews.html" data-icon="star" data-ajax="false" class="ui-btn-active">Reviews</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- BODY -->
+            <div role="page" class="ui-content">
+                <div data-role="fieldcontain">
+                    <textarea name="comment" id="comment" data-corners="false" placeholder="Share your experience with us..."></textarea>
+                    <a href="#" class="customDialogOption1" data-role="button" data-item-id="20" data-rel="back" role="button" id="sbmt"  data-theme="b">Post</a>
+                    <br>
+                    <h3>What others think of us? </h3>
+                    <div data-role="collapsible-set" data-theme="a"  id="reviewList" data-corners="false"></div>
+                </div>
+            </div><!-- /content -->
+            <script>
+                $(document).ready(function() {
+                    function display_profile(){
+                          var logged_user = sessionStorage.logged_name;
+                          var content = '';
+                          if(typeof logged_user !== 'undefined'){
+                            content += '<ul data-role="listview" data-icon="false" class="ui-listview" id="cartList">';
+                              content += '<li class="ui-li ui-li-divider ui-bar-d"><a href="myTray.html" class="ui-btn ui-icon-shop ui-btn-icon-left" data-theme="a" id="sidenav_mytray" data-ajax="false" style="font-weight:normal;">My Tray<span id="tray_content" style="display:inline;"></span></a></li>';
+                              content += '<li class="ui-li ui-li-divider ui-bar-d"><a href="#" class="ui-btn ui-icon-user ui-btn-icon-left" data-theme="a" id="sidenav_user_profile" data-ajax="false" style="font-weight:normal;">User Profile</a></li>';
+                              content += '<li class="ui-li ui-li-divider ui-bar-d"><a href="#" class="ui-btn ui-icon-info ui-btn-icon-left" data-theme="a" id="sidenav_about" data-ajax="false" style="font-weight:normal;">About clickPlate</a></li>';
+                              content += '<li class="ui-li ui-li-divider ui-bar-d"><a href="#" class="ui-btn ui-icon-power ui-btn-icon-left" data-theme="a" id="sidenav_logout" data-ajax="false" style="font-weight:normal;">Logout</a></li>';
+                            content += '</ul>';
+                            $('#myPanel').html(content);
+                          }else{
+                            content += '<ul data-role="listview" data-icon="false" class="ui-listview" id="cartList" style="">';
+                                content += '<li class="ui-li ui-li-divider ui-bar-d"><a href="#" class="ui-btn ui-icon-power ui-btn-icon-left" data-theme="a" id="sidenav_logout">Login</a></li>';
+                            content += '</ul>';
+                            $('#myPanel').html(content);
+                          }
+
+                          $('#sidenav_user_profile').click(function(e){
+                              // console.log('Redirecting to Register Page...');
+                              window.location.href = "user_profile.html";
+                          });
+                          $('#sidenav_logout').click(function(e){
+                              // console.log('Redirecting to Index Page...');
+                              // sessionStorage.clear();
+                              window.location.href = 'index.html';
+                          });
+                    }
+                    display_profile();
+                    function showCart() {
+                        var item_cart = sessionStorage.orderCart;
+                        item_cart = JSON.parse(item_cart);
+
+                        content = '';
+                        // content += '<div class="panel-content">';
+                        // content += '<ul data-role="listview" data-icon="false" class="ui-listview" id="cartList" style="">';
+                        // content += '<li data-role="list-divider" role="heading" class="ui-li ui-li-divider ui-bar-d">My Tray</li>';
+                        subtotal = 0;
+                        // shipping_cost = 0;
+                        ctr = 0;
+                        gtotal = 0;
+                        for(var i in item_cart){
+                            var line = JSON.parse(item_cart[i]);
+                            content += '<li data-role="list-divider" style="list-style-type: none;padding-left:30px;"><h4 style="white-space: normal;">'+unescape(line.name)+' </h4>@ ₱'+displayInCurr(line.price)+' - '+unescape(line.qty)+'pcs. <strong>₱'+unescape(line.qty*line.price)+'</strong></li><br><hr>';
+                            ctr++;
+                            subtotal += Number(line.qty*line.price);
+                            gtotal += Number(line.qty);
+                        }
+                        content += '<li style="text-align:right;">TOTAL : <strong>'+subtotal+'</strong></li>';
+                        // content += '<li><span class="ui-btn-inner"><a href="order_method_details.html" class="customDialogOption2" data-role="button" data-theme="b">CHECKOUT</a></span></li>';
+                        // content += '<li data-role="list-divider" role="heading" class="ui-li ui-li-divider ui-bar-d"><a href="user_profile.html" style="color:white;text-decoration:none;">User Profile</a></li>';
+                        // content += '<li data-role="list-divider" role="heading" class="ui-li ui-li-divider ui-bar-d"><a href="about.html" style="color:white;text-decoration:none;">About clickPlate</a></li>';
+                        // content += '</ul>';
+                        // content += ' <span><a data-role="button" href="#" class="toggle-panel ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-left ui-btn-up-a" data-theme="a" data-icon="delete" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span"><span class="ui-btn-inner"><span class="ui-btn-text">Checkout</a></span><span class="ui-icon ui-icon-delete ui-icon-shadow">&nbsp;</span></span></a></span></div>';
+                        // $('.count_order').append(ctr);
+                        $('#tray_content').html(content);
+                        var icount = Object.keys(item_cart).length;
+                        $('#tray_content').html(' ('+gtotal+')');
+                        $('#tray_content').trigger('updatelayout');
+                    }
+
+                    $( '#panelTrgr').click(function(e){
+                        // alert('zzzz');
+                        showCart();
+                    });
+
+                    var res_id = sessionStorage.res_id;
+                    var br_id = sessionStorage.br_id;
+
+                    var res_name = sessionStorage.res_name;
+                    $('.pagetitle').html(res_name);
+
+					function refresh() {
+					  $.mobile.changePage(
+						window.location.href,
+						{
+						  allowSamePageTransition : true,
+						  transition              : 'none',
+						  showLoadMsg             : false,
+						  reloadPage              : true
+						}
+					  );
+					}
+					window.location = 'reviews.html#loaded';
+					//refresh();
+
+                    $('#reviewList').html('<div class="loader" style="text-align:center;"><img src="img/loader.gif">Loading...</div>');
+
+                    $('#sbmt').click(function(e){
+                        var comment = $('#comment').val();
+                        // alert('zzz');
+
+                        // comment = jQuery.param( comment );
+                        // alert(remoteHost+"resto/restoList/restoAddBranchReviews/"+res_id+"/"+br_id+"/\""+escape(comment)+"\"");
+                        $.ajax({
+                              url : remoteHost+"resto/restoList/restoAddBranchReviews/"+res_id+"/"+br_id+"/\""+escape(comment)+"\"",
+                              type: 'POST',
+                              dataType : "json",
+                              cache: false,
+                              data: {"name":"JSON_Request"},
+                              success:function(data) {
+                                ///alert(data.items);
+                                 // $( "#reviewList" ).append(content);
+								console.log(data.items);
+								window.location = 'reviews.html';
+								// refresh();
+							  }
+                        });
+                         //$('#reviewList').listview('refresh');
+                         //$('#reviewList').enhanceWithin();
+                         <!-- window.location = 'reviews.html'; -->
+
+                        //Clear comment box...
+                        $('#comment').val('');
+                        return false;
+                    });
+
+                    // alert(remoteHost+"resto/restoList/restoBranchReviews/"+res_id+"/"+br_id);
+                    $.ajax({
+                          url : remoteHost+"resto/restoList/restoBranchReviews/"+res_id+"/"+br_id,
+                          type: 'POST',
+                          dataType : "json",
+                          cache: false,
+                          data: {"name":"JSON_Request"},
+                          success:function(data) {
+                            // alert(data.items);
+                            items = JSON.stringify(data.items);
+                            items = JSON.parse(items);
+                            content = '';
+
+                            content += '<ul data-role="listview" id="reviewList">';
+                            $.each(items,function(k,v){
+                                // content += '<li><img src="../_assets/img/album-bb.jpg"><h5>'+unescape(v.comment)+'</h5></li>';
+                                content += '<li><h5 style="white-space: normal;">'+unescape(v.comment)+'</h5><p>Posted on: '+v.comment_last+'</p></li>';
+                            });
+                            content += '</ul>';
+
+                            $('#reviewList').find('.loader').remove();
+                            $( "#reviewList" ).append(content);
+                            $('#reviewList').enhanceWithin();
+
+                          }
+                    });
+                });
+            </script>
+            <!-- FOOTER-->
+            <div data-role="footer" data-theme="e" style="border:0px;">
+                <center><img src="img/poweredby.png" class="poweredby"></center>
+            </div>
+        </div>
+
+        <script type="text/javascript" src="js/index.js"></script>
+        <link rel="stylesheet" href="css/jquery.1.4.3/jquery.mobile.structure-1.4.3.min.css" />
+        <script src="css/jquery.mobile-1.4.3.min.js"></script>
+
+        <!-- // <script type="text/javascript" src="includes/js/menu.js"></script> -->
+
+    </body>
+</html>

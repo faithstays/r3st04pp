@@ -1,0 +1,370 @@
+/*
+MySQL Backup
+Source Server Version: 5.6.16
+Source Database: new_resto
+Date: 11/4/2014 10:58:26
+*/
+
+SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+--  Table structure for `currencies`
+-- ----------------------------
+DROP TABLE IF EXISTS `currencies`;
+CREATE TABLE `currencies` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `currency` varchar(22) DEFAULT NULL,
+  `currency_desc` varchar(55) DEFAULT NULL,
+  `inactive` int(1) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+--  Table structure for `restaurants`
+-- ----------------------------
+DROP TABLE IF EXISTS `restaurants`;
+CREATE TABLE `restaurants` (
+  `res_id` int(11) NOT NULL AUTO_INCREMENT,
+  `res_code` varchar(55) DEFAULT NULL,
+  `res_name` varchar(55) DEFAULT NULL,
+  `res_desc` varchar(150) DEFAULT NULL,
+  `type_id` int(11) DEFAULT NULL,
+  `res_logo` longblob,
+  `prices_include_tax` int(1) DEFAULT '0',
+  `inactive` int(11) DEFAULT '0',
+  `date_added` date DEFAULT NULL,
+  `image` text,
+  PRIMARY KEY (`res_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+--  Table structure for `restaurant_branches`
+-- ----------------------------
+DROP TABLE IF EXISTS `restaurant_branches`;
+CREATE TABLE `restaurant_branches` (
+  `branch_id` int(11) NOT NULL AUTO_INCREMENT,
+  `res_id` int(11) DEFAULT NULL,
+  `branch_name` varchar(55) DEFAULT NULL,
+  `branch_desc` varchar(150) DEFAULT NULL,
+  `contact_no` varchar(255) DEFAULT NULL,
+  `delivery_no` varchar(255) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `base_location` varchar(100) DEFAULT NULL,
+  `no_delivery` tinyint(4) DEFAULT '0',
+  `currency` varchar(255) DEFAULT NULL,
+  `no_dine_in` tinyint(4) DEFAULT '0',
+  `no_take_out` tinyint(4) DEFAULT '0',
+  `image` varchar(100) DEFAULT NULL,
+  `inactive` tinyint(4) DEFAULT '0',
+  `lat_x` text,
+  `lng_y` text,
+  `facebook_url` text,
+  `twitter_url` text,
+  PRIMARY KEY (`branch_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+--  Table structure for `restaurant_branch_combos`
+-- ----------------------------
+DROP TABLE IF EXISTS `restaurant_branch_combos`;
+CREATE TABLE `restaurant_branch_combos` (
+  `menu_combo_id` int(11) NOT NULL AUTO_INCREMENT,
+  `branch_id` int(11) DEFAULT NULL,
+  `combo_id` int(11) DEFAULT NULL,
+  `selling_price` double DEFAULT '0',
+  PRIMARY KEY (`menu_combo_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+--  Table structure for `restaurant_branch_comments`
+-- ----------------------------
+DROP TABLE IF EXISTS `restaurant_branch_comments`;
+CREATE TABLE `restaurant_branch_comments` (
+  `branch_comment_id` int(11) NOT NULL AUTO_INCREMENT,
+  `res_id` int(11) DEFAULT NULL,
+  `branch_id` int(11) DEFAULT NULL,
+  `comment` longtext,
+  `comment_last` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`branch_comment_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+--  Table structure for `restaurant_branch_items`
+-- ----------------------------
+DROP TABLE IF EXISTS `restaurant_branch_items`;
+CREATE TABLE `restaurant_branch_items` (
+  `menu_item_id` int(11) NOT NULL AUTO_INCREMENT,
+  `branch_id` int(11) DEFAULT NULL,
+  `item_id` int(11) DEFAULT NULL,
+  `price` double DEFAULT '0',
+  `portion_price` double DEFAULT '0',
+  PRIMARY KEY (`menu_item_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+--  Table structure for `restaurant_branch_managers`
+-- ----------------------------
+DROP TABLE IF EXISTS `restaurant_branch_managers`;
+CREATE TABLE `restaurant_branch_managers` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `branch_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `inactive` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+--  Table structure for `restaurant_branch_staffs`
+-- ----------------------------
+DROP TABLE IF EXISTS `restaurant_branch_staffs`;
+CREATE TABLE `restaurant_branch_staffs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `branch_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `staff_id` int(11) DEFAULT NULL,
+  `access` longtext,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+--  Table structure for `restaurant_branch_tables`
+-- ----------------------------
+DROP TABLE IF EXISTS `restaurant_branch_tables`;
+CREATE TABLE `restaurant_branch_tables` (
+  `tbl_id` int(11) NOT NULL AUTO_INCREMENT,
+  `branch_id` int(11) DEFAULT NULL,
+  `capacity` int(11) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `name` varchar(55) DEFAULT NULL,
+  `top` int(11) DEFAULT '0',
+  `left` int(11) DEFAULT '0',
+  PRIMARY KEY (`tbl_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+--  Table structure for `restaurant_combos`
+-- ----------------------------
+DROP TABLE IF EXISTS `restaurant_combos`;
+CREATE TABLE `restaurant_combos` (
+  `combo_id` int(11) NOT NULL AUTO_INCREMENT,
+  `res_id` int(11) DEFAULT NULL,
+  `combo_code` varchar(22) DEFAULT NULL,
+  `combo_name` varchar(55) DEFAULT NULL,
+  `combo_barcode` varchar(55) DEFAULT NULL,
+  `combo_desc` longtext,
+  `selling_price` double DEFAULT NULL,
+  `img` text,
+  `image` varchar(100) DEFAULT NULL,
+  `inactive` int(1) DEFAULT '0',
+  PRIMARY KEY (`combo_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+--  Table structure for `restaurant_combo_details`
+-- ----------------------------
+DROP TABLE IF EXISTS `restaurant_combo_details`;
+CREATE TABLE `restaurant_combo_details` (
+  `combo_det_id` int(11) NOT NULL AUTO_INCREMENT,
+  `combo_id` int(11) DEFAULT NULL,
+  `item_id` int(11) DEFAULT NULL,
+  `qty` int(11) DEFAULT NULL,
+  `type` varchar(22) DEFAULT 'whole',
+  PRIMARY KEY (`combo_det_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+--  Table structure for `restaurant_discounts`
+-- ----------------------------
+DROP TABLE IF EXISTS `restaurant_discounts`;
+CREATE TABLE `restaurant_discounts` (
+  `disc_id` int(11) NOT NULL AUTO_INCREMENT,
+  `disc_code` varchar(22) DEFAULT NULL,
+  `disc_name` varchar(100) DEFAULT NULL,
+  `res_id` int(11) DEFAULT NULL,
+  `disc_rate` double DEFAULT NULL,
+  PRIMARY KEY (`disc_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+--  Table structure for `restaurant_items`
+-- ----------------------------
+DROP TABLE IF EXISTS `restaurant_items`;
+CREATE TABLE `restaurant_items` (
+  `item_id` int(11) NOT NULL AUTO_INCREMENT,
+  `code` varchar(55) DEFAULT NULL,
+  `barcode` varchar(80) DEFAULT NULL,
+  `res_id` int(11) DEFAULT NULL,
+  `name` varchar(150) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `cat_id` int(11) DEFAULT NULL,
+  `sub_cat_id` int(11) DEFAULT NULL,
+  `price` double DEFAULT NULL,
+  `portion` varchar(255) DEFAULT NULL,
+  `portion_price` double DEFAULT NULL,
+  `img` longblob,
+  `image` varchar(100) DEFAULT NULL,
+  `inactive` tinyint(4) DEFAULT '0',
+  PRIMARY KEY (`item_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+--  Table structure for `restaurant_item_categories`
+-- ----------------------------
+DROP TABLE IF EXISTS `restaurant_item_categories`;
+CREATE TABLE `restaurant_item_categories` (
+  `cat_id` int(11) NOT NULL AUTO_INCREMENT,
+  `res_id` int(11) DEFAULT NULL,
+  `code` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `image` varchar(100) DEFAULT NULL,
+  `inactive` int(11) DEFAULT '0',
+  PRIMARY KEY (`cat_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+--  Table structure for `restaurant_item_subcategories`
+-- ----------------------------
+DROP TABLE IF EXISTS `restaurant_item_subcategories`;
+CREATE TABLE `restaurant_item_subcategories` (
+  `sub_cat_id` int(11) NOT NULL AUTO_INCREMENT,
+  `cat_id` int(11) DEFAULT NULL,
+  `res_id` int(11) DEFAULT NULL,
+  `code` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `image` varchar(100) DEFAULT NULL,
+  `inactive` int(11) DEFAULT '0',
+  PRIMARY KEY (`sub_cat_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+--  Table structure for `restaurant_orders`
+-- ----------------------------
+DROP TABLE IF EXISTS `restaurant_orders`;
+CREATE TABLE `restaurant_orders` (
+  `order_id` int(11) NOT NULL AUTO_INCREMENT,
+  `res_id` int(11) DEFAULT NULL,
+  `branch_id` int(11) DEFAULT NULL,
+  `tbl_id` int(11) DEFAULT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `pax` double(10,0) DEFAULT NULL,
+  `total` double DEFAULT '0',
+  `date` datetime DEFAULT NULL,
+  `done_date` datetime DEFAULT NULL,
+  `status` varchar(255) DEFAULT 'pending',
+  PRIMARY KEY (`order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+--  Table structure for `restaurant_order_details`
+-- ----------------------------
+DROP TABLE IF EXISTS `restaurant_order_details`;
+CREATE TABLE `restaurant_order_details` (
+  `order_detail_id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_id` int(11) NOT NULL,
+  `item_id` int(11) DEFAULT NULL,
+  `item_name` varchar(150) DEFAULT NULL,
+  `qty` double DEFAULT NULL,
+  `price` double DEFAULT NULL,
+  `type` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`order_detail_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+--  Table structure for `restaurant_photos`
+-- ----------------------------
+DROP TABLE IF EXISTS `restaurant_photos`;
+CREATE TABLE `restaurant_photos` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `res_id` int(11) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+--  Table structure for `restaurant_staffs`
+-- ----------------------------
+DROP TABLE IF EXISTS `restaurant_staffs`;
+CREATE TABLE `restaurant_staffs` (
+  `staff_id` int(11) NOT NULL AUTO_INCREMENT,
+  `staff_name` varchar(55) DEFAULT NULL,
+  `access` longtext,
+  `inactive` tinyint(4) DEFAULT '0',
+  PRIMARY KEY (`staff_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+--  Table structure for `restaurant_tax_rates`
+-- ----------------------------
+DROP TABLE IF EXISTS `restaurant_tax_rates`;
+CREATE TABLE `restaurant_tax_rates` (
+  `tax_id` int(11) NOT NULL,
+  `res_id` int(11) DEFAULT NULL,
+  `name` varchar(55) DEFAULT NULL,
+  `rate` double DEFAULT NULL,
+  PRIMARY KEY (`tax_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+--  Table structure for `restaurant_types`
+-- ----------------------------
+DROP TABLE IF EXISTS `restaurant_types`;
+CREATE TABLE `restaurant_types` (
+  `type_id` int(11) NOT NULL AUTO_INCREMENT,
+  `type_code` varchar(22) DEFAULT NULL,
+  `type_name` varchar(55) DEFAULT NULL,
+  `inactive` tinyint(4) DEFAULT '0',
+  PRIMARY KEY (`type_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+--  Table structure for `users`
+-- ----------------------------
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `fname` varchar(55) DEFAULT NULL,
+  `mname` varchar(55) DEFAULT NULL,
+  `lname` varchar(55) DEFAULT NULL,
+  `suffix` varchar(55) DEFAULT NULL,
+  `role` int(11) DEFAULT NULL,
+  `email` varchar(255) NOT NULL,
+  `gender` varchar(11) DEFAULT NULL,
+  `reg_date` datetime DEFAULT NULL,
+  `inactive` int(11) DEFAULT '0',
+  PRIMARY KEY (`id`,`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+--  Table structure for `user_roles`
+-- ----------------------------
+DROP TABLE IF EXISTS `user_roles`;
+CREATE TABLE `user_roles` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `role` varchar(50) NOT NULL,
+  `description` varchar(100) DEFAULT NULL,
+  `access` longtext,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+--  Records 
+-- ----------------------------
+INSERT INTO `currencies` VALUES ('1','PHP','Philippine Peso','0'), ('2','USD','US Dollars','0'), ('3','YEN','Japanese Yen','0');
+INSERT INTO `restaurants` VALUES ('1','1001','Bonchon Chicken','chicken,soups,desserts','1',NULL,'0','0',NULL,'1.png'), ('2','1002','World Chicken','chicken platters','1',NULL,'0','0',NULL,'2.jpg');
+INSERT INTO `restaurant_branches` VALUES ('1','1','GREENBELT 1','GREENBELT 1','(02) 659-8080','(02) 659-8080','Greenbelt 1, Ground floor, Ayala Center, Paseo de Roxas, Makati City','Greenbelt 1, Greenbelt Drive Ayala Center, Makati','0','PHP','0','0',NULL,'0','','','https://www.facebook.com/pages/BonChon-Chicken-Greenbelt-1/335026303253281?fref=ts','https://twitter.com/BonChon_PH'), ('2','1','ROBINSONS GALLERIA','ROBINSONS GALLERIA','(02) 477-1818','(02) 477-1818','East Wing, 2nd Level, Robinsons Galleria, Mall, Ortigas','Robinsons Galleria','0','PHP','0','0',NULL,'0','','','https://www.facebook.com/pages/BonChon-Chicken-Robinsons-Galleria/214681368583016?fref=ts','https://twitter.com/BonChon_PH'), ('3','1','SHANGRI-LA PLAZA','SHANGRI-LA PLAZA','(02) 696-1818','(02) 696-1818','Shangrila Plaza Mall, Unit 48 Lower ground Floor Level, Edsa Shaw Blvd. Mandaluyong City','Shangrila Plaza Mall','0','PHP','0','0',NULL,'0','','','https://www.facebook.com/pages/BonChon-Chicken-Edsa-Shangrila/337129476373842?fref=ts','https://twitter.com/BonChon_PH'), ('4','1','ONE E-COM CENTER','ONE E-COM CENTER','(02) 804-1134','(02) 804-1134','Ground Floor, One Ecom Center, Mall of Asia Complex, Pasay City','One Ecom Center, Mall of Asia Complex, Pasay City','0','PHP','0','0',NULL,'0','','','https://www.facebook.com/pages/Chicken-Bon-Chon-One-E-com-Center-SM-MOA-Complex/193692947472250?fref=ts','https://twitter.com/BonChon_PH'), ('5','1','SM MALL OF ASIA','SM MALL OF ASIA','(02) 846-1818','(02) 846-1818','Space 100-101 G/F SM Mall of Asia Diokno Blvd. Pasay City','SM Mall of Asia','0','PHP','0','0',NULL,'0','','','https://www.facebook.com/pages/BonChon-Chicken-SM-Megamall/209497469084506?rf=299077600130843','https://twitter.com/BonChon_PH'), ('6','2','Glorietta 4 Ayala','Glorietta 4 Ayala','(02) 729-6543','(02) 729-6543','Glorietta 4 Ayala','Glorietta 4 Ayala','0','PHP','0','0',NULL,'0','','',NULL,NULL), ('7','2','Greenbelt 1 Ayala','Greenbelt 1 Ayala','(02) 818-2601','(02) 818-2601','Greenbelt 1 Ayala','Greenbelt 1 Ayala','0','PHP','0','0',NULL,'0','','',NULL,NULL), ('8','2','Trinoma Mall','Trinoma Mall','(02) 916-5535','(02) 916-5535','Trinoma Mall','Trinoma Mall','0','PHP','0','0',NULL,'0','','',NULL,NULL);
+INSERT INTO `restaurant_branch_comments` VALUES ('1','1','1','Comfort%20food%20and%20friends%20always%20mix%20well%21%20Thanks%20Bonchon%21','2014-10-14 10:41:32'), ('2','1','1','I%20just%20cant%20describe%20how%20exactly%20Bonchon%20chickens%20taste%20so%20good%3A&#41;','2014-10-14 10:43:14'), ('3','1','1','sarap%20promise%21','2014-10-14 10:54:03');
+INSERT INTO `restaurant_branch_staffs` VALUES ('1','1','1','1',NULL), ('12','5','1','1','add,edit,delete'), ('28','6','2','1','add,edit,delete'), ('31','5','2','3',''), ('32','6','1','1','add,edit,delete');
+INSERT INTO `restaurant_combos` VALUES ('1','2','PARTYPACK00001','PARTY PACKAGE 1','PARTYPACK00001','12PCS. BONELESS CHICKEN\r\nCHOICE OF 1 SAUCE\r\nCHOICE OF 1 SIDING','0',NULL,'PARTYPACK00001.','0');
+INSERT INTO `restaurant_combo_details` VALUES ('1','1','40','12','whole');
+INSERT INTO `restaurant_discounts` VALUES ('1','SNDISC','Senior Citizen Discount','1','8');
+INSERT INTO `restaurant_items` VALUES ('1','ITEM000011','ITEM000011','1','WINGS - 6 PCS','DRUMETTE / TIP','1','1','195','1','195',NULL,'WINGS.png','0'), ('2','ITEM000012','ITEM000012','1','WINGS-12 PCS','DRUMETTE / TIP','1','2','375','1','375',NULL,'WINGS.png','0'), ('3','ITEM000013','ITEM000013','1','WINGS-24 PCS','DRUMETTE / TIP','1','3','730','1','730',NULL,'WINGS.png','0'), ('4','ITEM000021','ITEM000021','1','DRUMSTICKS-3 PCS','DRUMSTICKS','1','4','195','1','195',NULL,'DRUMSTICK.png','0'), ('5','ITEM000022','ITEM000022','1','DRUMSTICKS-6 PCS','DRUMSTICKS','1','1','375','1','375',NULL,'DRUMSTICK.png','0'), ('6','ITEM000023','ITEM000023','1','DRUMSTICKS-12 PCS','DRUMSTICKS','1','2','730','1','730',NULL,'DRUMSTICK.png','0'), ('7','ITEM000031','ITEM000031','1','CHOPS-4 PCS','CHOPS','1','5','195','1','195',NULL,'CHOPS.png','0'), ('8','ITEM000032','ITEM000032','1','CHOPS-8 PCS','CHOPS','1','6','375','1','375',NULL,'CHOPS.png','0'), ('9','ITEM000033','ITEM000033','1','CHOPS-16 PCS','CHOPS','1','7','730','1','730',NULL,'CHOPS.png','0'), ('10','ITEM000041','ITEM000041','1','THIGH-3PCS','THIGH','1','4','195','1','195',NULL,'THIGH.png','0'), ('11','ITEM000042','ITEM000042','1','THIGH-6 PCS','THIGH','1','1','375','1','375',NULL,'THIGH.png','0'), ('12','ITEM000043','ITEM000043','1','THIGH-12PCS','THIGH','1','2','730','1','730',NULL,'THIGH.png','0'), ('13','ITEM000051','ITEM000051','1','CHAPCHAE','is a dish of deliciously chewy cellophane noodles made from sweet potato starch.','4','0','75','1','75',NULL,'CHAPCHAE.jpg','0'), ('14','ITEM000061','ITEM000061','1','CALAMARI','The best fried squid,  are crispy on the outside and tender on the inside.','4','0','129','1','129',NULL,'CALAMARI.png','0'), ('15','ITEM000071','ITEM000071','1','FISH TACO',' consist of grilled or fried fish, lettuce or cabbage, pico de gallo, and a sour cream or citrus/mayonnaise sauce, all placed on top of a corn or flour tortilla.','4','0','75','1','75',NULL,'FISH TACO.png','0'), ('16','ITEM000081','ITEM000081','1','SNACKWICH','For something you can have on the go, Bon Chon has the ultimate Snackwich.  Available in Double Garlic features soy garlic glazed chicken chop in a sesame kaiser bun with some garlic mayo, garlic bits, and lettuce. and Double Spicy Snackwich.','4','0','75','1','75',NULL,'SNACKWICH.png','0'), ('17','ITEM100011','ITEM100011','2','JERK CHICKEN','JERK CHICKEN\r\n','8','0','150','1','150',NULL,'JERK CHICKEN.png','0'), ('18','ITEM100012','ITEM100012','2','CHICKEN TERIYAKI','CHICKEN TERIYAKI\r\n','8','0','150','1','150',NULL,'CHICKEN TERIYAKI.png','0'), ('19','ITEM100013','ITEM100013','2','CHICKEN INASAL','CHICKEN INASAL','8','0','150','1','150',NULL,'CHICKEN INASAL.png','0'), ('20','ITEM100014','ITEM100014','2','CORN CHOWDER SOUP','CORN CHOWDER SOUP','9','0','54','1','54',NULL,'corn chowder soup.jpg','0'), ('21','ITEM100015','ITEM100015','2','MACARONI SALAD','MACARONI SALAD\r\n','9','0','60','1','60',NULL,'macaroni salad.jpg','0'), ('22','ITEM100016','ITEM100016','2','POTATO SALAD','POTATO SALAD','9','0','60','1','60',NULL,'potato salad.jpg','0'), ('23','ITEM100017','ITEM100017','2','BACON RICE','BACON RICE','9','0','56','1','56',NULL,'bacon rice.jpg','0'), ('24','ITEM100018','ITEM100018','2','MASHED POTATO','MASHED POTATO','9','0','60','1','60',NULL,'mashed potato.jpg','0'), ('25','ITEM100019','ITEM100019','2','JAPANESE RICE','JAPANESE RICE\r\n','9','0','56','1','56',NULL,'japanese rice.jpg','0'), ('26','ITEM100020','ITEM100020','2','CHEESE MUFFIN','CHEESE MUFFIN','9','0','36','1','36',NULL,'cheese muffin.jpg','0'), ('27','ITEM100021','ITEM100021','2','ASIAN NOODLES','ASIAN NOODLES','9','0','70','1','70',NULL,'asian noodles.jpg','0'), ('28','ITEM100022','ITEM100022','2','ESPANOL RICE','ESPANOL RICE\r\n','9','0','56','1','56',NULL,'espanol rice.jpg','0'), ('29','ITEM100023','ITEM100023','2','FETTUCINE AL TONO','FETTUCINE AL TONO\r\n','9','0','77','1','77',NULL,'fettucine al tono.jpg','0'), ('30','ITEM100024','ITEM100024','2','FRIED BANANA','FRIED BANANA\r\n','9','0','34','1','34',NULL,'fried banana.jpg','0'), ('31','ITEM100025','ITEM100025','2','PESTO CREAM','PESTO CREAM\r\n','9','0','70','1','70',NULL,'pesto.jpg','0'), ('32','ITEM100026','ITEM100026','2','SPAGHETTI POMODORO','SPAGHETTI POMODORO\r\n','9','0','70','1','70',NULL,'spaghetti pomodoro.jpg','0'), ('33','ITEM100027','ITEM100027','2','SOFTDRINKS(IN CAN)','SOFTDRINKS(IN CAN)\r\n','10','0','45','1','45',NULL,'softdrinks.jpg','0'), ('34','ITEM100027','ITEM100027','2','SOFTDRINKS(VENDO)','SOFTDRINKS(VENDO)\r\n','10','0','28','1','28',NULL,'softdrinks.jpg','0'), ('35','ITEM100029','ITEM100029','2','MANGO JUICE','MANGO JUICE\r\n','10','0','35','1','35',NULL,'mango juice.jpg','0'), ('36','ITEM100030','ITEM100030','2','FOUR SEASONS','FOUR SEASONS\r\n\r\n','10','0','35','1','35',NULL,'four seasons.jpg','0'), ('37','ITEM100031','ITEM100031','2','WC ICE TEA','WC ICE TEA\r\n','10','0','29','1','29',NULL,'ice tea.jpg','0'), ('38','ITEM100032','ITEM100032','2','BOTTOMLESS ICE TEA','BOTTOMLESS ICE TEA\r\n','10','0','49','1','49',NULL,'ice tea.jpg','0'), ('39','ITEM100033','ITEM100033','2','MINERAL WATER','MINERAL WATER\r\n','10','0','25','1','25',NULL,'mineral water.jpg','0'), ('40','ITEM100034','ITEM100034','2','BONELESS CHICKEN','BONELESS CHICKEN\r\n','8','0','0','1','0',NULL,'boneless chicken.jpg','0'), ('41','ITEM100035','ITEM100035','2','FARM FRESH MUSHROOM','FARM FRESH MUSHROOM\r\n','11','0','25','1','25',NULL,NULL,'0'), ('42','ITEM100036','ITEM100036','2','CORN & MUSHROOM','CORN & MUSHROOM\r\n','11','0','25','1','25',NULL,NULL,'0'), ('43','ITEM100037','ITEM100037','2','RANCH BBQ','RANCH BBQ\r\n','11','0','25','1','25',NULL,NULL,'0'), ('44','ITEM100038','ITEM100038','2','TERIYAKI','TERIYAKI\r\n','11','0','25','1','25',NULL,NULL,'0'), ('45','ITEM100039','ITEM100039','2','TARAGON','TARAGON\r\n','11','0','25','1','25',NULL,NULL,'0'), ('46','ITEM100040','ITEM100040','2','CHEESE','CHEESE\r\n','11','0','25','1','25',NULL,NULL,'0'), ('47','ITEM100041','ITEM100041','2','SWEET CHILI','SWEET CHILI\r\n','11','0','25','1','25',NULL,NULL,'0'), ('48','ITEM100042','ITEM100042','1','SODA','SODA','7','0','30','1','30',NULL,NULL,'0'), ('49','ITEM100043','ITEM100043','1','Iced Tea','Iced Tea','7','0','30','1','30',NULL,NULL,'0'), ('50','ITEM100044','ITEM100044','1','Iced Tea Lite','Iced Tea Lite','7','0','30','1','30',NULL,NULL,'0'), ('51','ITEM100045','ITEM100045','1','SODA IN CAN','SODA IN CAN','7','0','35','1','35',NULL,NULL,'0');
+INSERT INTO `restaurant_item_categories` VALUES ('1','1','CAT0001','THE ORIGINAL',NULL,'0'), ('2','1','CAT0002','BOXED MEALS',NULL,'0'), ('3','1','CAT0003','TEAM BONCHON GROUP MEAL',NULL,'0'), ('4','1','CAT0004','MAIN & SNACKS',NULL,'0'), ('5','1','CAT0005','SOUP, SIDES & SALADS',NULL,'0'), ('6','1','CAT0006','DESSERTS',NULL,'0'), ('7','1','CAT0007','DRINKS',NULL,'0'), ('8','2','CAT1001','PLATTERS',NULL,'0'), ('9','2','CAT1002','CLASSIC SIDE ORDERS',NULL,'0'), ('10','2','CAT1003','BEVERAGES',NULL,'0'), ('11','2','CAT1004','SALSA',NULL,'0');
+INSERT INTO `restaurant_item_subcategories` VALUES ('1','1','1','SCAT0001','6PCS','SCAT0001.','0'), ('2','1','1','SCAT0002','12PCS','SCAT0002.','0'), ('3','1','1','SCAT0003','24PCS','SCAT0003.','0'), ('4','1','1','SCAT0004','3PCS','SCAT0004.','0'), ('5','1','1','SCAT0005','4PCS','SCAT0005.','0'), ('6','1','1','SCAT0006','8PCS','SCAT0006.','0'), ('7','1','1','SCAT0007','16PCS','SCAT0007.','0');
+INSERT INTO `restaurant_photos` VALUES ('1','1','bonchon-01.jpg'), ('2','1','bonchon-02.jpg'), ('3','1','bonchon-03.jpg');
+INSERT INTO `restaurant_staffs` VALUES ('1','Manager','add,edit,delete','0'), ('2','Waiter',NULL,'0'), ('3','Cook',NULL,'0');
+INSERT INTO `restaurant_tax_rates` VALUES ('1','1','VAT','12');
+INSERT INTO `restaurant_types` VALUES ('1','FF','Fast Food','0'), ('2','FC','Fast Casual','0'), ('3','CD','Casual Dining','0'), ('4','FD','Fine Dining','0');
+INSERT INTO `users` VALUES ('1','admin','5f4dcc3b5aa765d61d8327deb882cf99','Rey','Coloma','Tejada','Jr.','1','rey.tejada01@gmail.com','male','2014-06-16 14:41:31','0'), ('2','jomar','5f4dcc3b5aa765d61d8327deb882cf99','Jomar','','Agbon','',NULL,'jomari999@yahoo.com','female','2014-06-16 15:08:59','0');
+INSERT INTO `user_roles` VALUES ('1','Administrator ','System Administrator','all'), ('2','Manager','Manager','management,service_types,services,teams,requests,dashboard'), ('3','Employee','Employee','dashboard,requests');
