@@ -34,7 +34,7 @@
             </div>
             <!-- HEADER -->
             <div data-role="header" data-position="fixed" data-tap-toggle="false">
-                <a href="home.html" data-icon="home" data-iconpos="notext" id="glb_home" data-ajax="false"></a>
+                <a href="index.html" data-icon="home" data-iconpos="notext" id="glb_home" data-ajax="false"></a>
                 <h4 class="pagetitle"></h4>
                 <a href="#myPanel" data-icon="bars" class="ui-btn-right" data-iconpos="notext"></a>
             </div>
@@ -50,9 +50,9 @@
                         <div data-role="">
                             <a href="#" data-role="button" id="add_to_tray" data-icon="arrow-r" data-theme="c">Add To Tray</a>
                         </div>
-                        <div data-role="">
+<!--                         <div data-role="">
                             <a href="#" data-role="button" id="checkout" data-icon="check" data-theme="b">Checkout</a>
-                        </div>
+                        </div> -->
                     </div>
                 </form>
             </div>
@@ -69,37 +69,36 @@
         <script>
         $(document).ready(function() {
             function display_profile(){
-                    var logged_user = sessionStorage.logged_name;
-                    var content = '';
-                    if(typeof logged_user !== 'undefined'){
-                    content += '<ul data-role="listview" data-icon="false" class="ui-listview" id="cartList">';
-                      content += '<li class="ui-li ui-li-divider ui-bar-d"><a href="myTray.html" class="ui-btn ui-icon-shop ui-btn-icon-left" data-theme="a" id="sidenav_mytray" data-ajax="false" style="font-weight:normal;">My Tray<span id="tray_content" style="display:inline;"></span></a></li>';
-                      content += '<li class="ui-li ui-li-divider ui-bar-d"><a href="#" class="ui-btn ui-icon-user ui-btn-icon-left" data-theme="a" id="sidenav_user_profile" data-ajax="false" style="font-weight:normal;">User Profile</a></li>';
-                      content += '<li class="ui-li ui-li-divider ui-bar-d"><a href="#" class="ui-btn ui-icon-info ui-btn-icon-left" data-theme="a" id="sidenav_about" data-ajax="false" style="font-weight:normal;">About clickPLATE</a></li>';
-                      content += '<li class="ui-li ui-li-divider ui-bar-d"><a href="#" class="ui-btn ui-icon-power ui-btn-icon-left" data-theme="a" id="sidenav_logout" data-ajax="false" style="font-weight:normal;">Logout</a></li>';
-                    content += '</ul>';
-                    $('#myPanel').html(content);
-                    }else{
-                        content += '<ul data-role="listview" data-icon="false" class="ui-listview" id="cartList" style="">';
-                            content += '<li class="ui-li ui-li-divider ui-bar-d"><a href="myTray.html" class="ui-btn ui-icon-shop ui-btn-icon-left" data-theme="a" id="sidenav_mytray" data-ajax="false" style="font-weight:normal;">My Tray<span id="tray_content" style="display:inline;"></span></a></li>';
-                            content += '<li class="ui-li ui-li-divider ui-bar-d"><a href="#" class="ui-btn ui-icon-power ui-btn-icon-left" data-theme="a" id="sidenav_logout">Login</a></li>';
-                            content += '<li class="ui-li ui-li-divider ui-bar-d"><a href="#" class="ui-btn ui-icon-info ui-btn-icon-left" data-theme="a" id="sidenav_about" data-ajax="false" style="font-weight:normal;">About clickPLATE</a></li>';
-                        content += '</ul>';
-                    $('#myPanel').html(content);
-                    }
+                            var logged_user = sessionStorage.logged_name;
+                            var content = '';
+                            if(typeof logged_user !== 'undefined'){
+                                content += '<ul data-role="listview" data-icon="false" class="ui-listview" id="cartList">';
+                                content += '<li class="ui-li ui-li-divider ui-bar-d"><a href="myTray.html" class="ui-btn ui-icon-shop ui-btn-icon-left" data-theme="a" id="sidenav_mytray" data-ajax="false" style="font-weight:normal;">My Tray<span id="tray_content" style="display:inline;"></span></a></li>';
+                                content += '<li class="ui-li ui-li-divider ui-bar-d"><a href="#" class="ui-btn ui-icon-user ui-btn-icon-left" data-theme="a" id="sidenav_user_profile" data-ajax="false" style="font-weight:normal;">User Profile</a></li>';
+                                content += '<li class="ui-li ui-li-divider ui-bar-d"><a href="#" class="ui-btn ui-icon-info ui-btn-icon-left" data-theme="a" id="sidenav_about" data-ajax="false" style="font-weight:normal;">About clickPLATE</a></li>';
+                                content += '<li class="ui-li ui-li-divider ui-bar-d"><a href="#" class="ui-btn ui-icon-power ui-btn-icon-left" data-theme="a" id="sidenav_logout_" data-ajax="false" style="font-weight:normal;">Logout</a></li>';
+                                content += '</ul>';
+                                $('#myPanel').html(content);
+                            }else{
+                                content += '<ul data-role="listview" data-icon="false" class="ui-listview" id="cartList" style="">';
+                                content += '<li class="ui-li ui-li-divider ui-bar-d"><a href="#" class="ui-btn ui-icon-power ui-btn-icon-left" data-theme="a" id="sidenav_logout">Login</a></li>';
+                                content += '<li class="ui-li ui-li-divider ui-bar-d"><a href="#" class="ui-btn ui-icon-info ui-btn-icon-left" data-theme="a" id="sidenav_about" data-ajax="false" style="font-weight:normal;">About clickPLATE</a></li>';
+                                content += '</ul>';
+                                $('#myPanel').html(content);
+                            }
 
-                    $('#sidenav_user_profile').click(function(e){
-                      // console.log('Redirecting to Register Page...');
-                      window.location.href = "user_profile.html";
-                    });
-                    $('#sidenav_logout').click(function(e){
-                      // console.log('Redirecting to Index Page...');
-                      // sessionStorage.clear();
-                      window.location.href = 'index.html';
-                    });
-                    $('#sidenav_about').click(function(e){
-                        window.location.href = 'about_us.html';
-                    });
+                            $('#sidenav_user_profile').click(function(e){
+                                window.location.href = "user_profile.html";
+                            });
+                            $('#sidenav_logout_').click(function(e){
+                                window.location.href = 'logout.html';
+                            });
+                            $('#sidenav_logout').click(function(e){
+                                window.location.href = 'login_form.html';
+                            });
+                            $('#sidenav_about').click(function(e){
+                                window.location.href = 'about_us.html';
+                            });
             }
             display_profile();
             function showCart() {
@@ -125,7 +124,7 @@
             }
 
             $( '#panelTrgr').click(function(e){
-                showCart();
+              showCart();
             });
 
             var res_id = getUrlParameter('res_id');

@@ -1,5 +1,5 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
+ * 7 to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
  * distributed with this work for additional information
  * regarding copyright ownership.  The ASF licenses this file
@@ -50,6 +50,7 @@ var app = {
 
 // HOST ADDRESS
 var remoteHost = 'http://127.0.0.1/';
+// var remoteHost = 'http://192.168.254.7/';
 // var remoteHost = 'http://192.168.254.4/';
 // var remoteHost = 'http://122.3.195.117/';
 sessionStorage.remoteHost = remoteHost;

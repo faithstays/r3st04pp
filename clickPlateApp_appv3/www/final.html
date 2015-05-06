@@ -254,7 +254,10 @@
                         });
 
                         $('#place_ordered').click(function(){
-                            sessionStorage.clear();
+                            // sessionStorage.clear();
+                            sessionStorage.removeItem('orderCart');
+                            sessionStorage.removeItem('orderModCart');
+                            sessionStorage.removeItem('order_header');
                         })
 
                     });

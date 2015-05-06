@@ -80,7 +80,7 @@
                 </div>
             </div> -->
             <div data-role="header" data-position="fixed">
-                <a href="home.html" data-icon="home" data-iconpos="notext" id="glb_home" data-ajax="false"></a>
+                <a href="index.html" data-icon="home" data-iconpos="notext" id="glb_home" data-ajax="false"></a>
                 <h1 class="pagetitle">Checkout</h1>
                 <!-- <a href="#myPanel" data-icon="bars" class="ui-btn-right" data-iconpos="notext" id="panelTrgr"></a> -->
             </div>
@@ -270,7 +270,7 @@
                             // $('.payment_details_checkout').append('<li><h2>'+order_method+'</h2></li>');
                             var cust_details = '';
                             cust_details += '<div class="ui-grid-a" data-theme="a">';
-                                cust_details += '<div class="ui-block-a" style="font-weight:bold;min-height:25px;">Payment Method: </div>';
+                                cust_details += '<div class="ui-block-a" style="font-weight:bold;min-height:25px;">Service Type: </div>';
                                 cust_details += '<div class="ui-block-b">'+order_method+'</div>';
                             cust_details += '</div>';
                             $('.payment_details_checkout').append(cust_details);
@@ -484,224 +484,226 @@
                             ////////////////////////////////////////////////////////////////////////////
                             //ADDING TO trans_sales
                             ////////////////////////////////////////////////////////////////////////////
-                            $.ajax({
-                                url : remoteHost+"clickPlatev2/app_orders/addTableReservation/"+user_id+"/"+order_method_short+"/"+total,
-                                type: 'POST',
-                                dataType : "json",
-                                cache: false,
-                                data: {"name":"JSON_Request"},
-                                success:function(data) {
-                                    var last_order_header_id = data.id;
+                            orderMenuItems = sessionStorage.orderCart;
+                            if(typeof orderMenuItems !== 'undefined' && orderMenuItems !== null) {
+                                $.ajax({
+                                    url : remoteHost+"clickPlatev2/app_orders/addTableReservation/"+user_id+"/"+order_method_short+"/"+total,
+                                    type: 'POST',
+                                    dataType : "json",
+                                    cache: false,
+                                    data: {"name":"JSON_Request"},
+                                    success:function(data) {
+                                        var last_order_header_id = data.id;
 
 
-                                    ///////////////////////////////////////////////////////////////////////////////////////////
-                                    //INSERT TO APP ORDER TABLE
-                                    ///////////////////////////////////////////////////////////////////////////////////////////
+                                        ///////////////////////////////////////////////////////////////////////////////////////////
+                                        //INSERT TO APP ORDER TABLE
+                                        ///////////////////////////////////////////////////////////////////////////////////////////
 
 
-                                    orderMenuItems = sessionStorage.orderCart;
-                                    if(typeof orderMenuItems !== 'undefined' && orderMenuItems !== null) {
-                                        orderMenuItems = JSON.parse(orderMenuItems);
-                                        console.log(orderMenuItems);
-                                        if(orderMenuItems.length > 0){
-                                            $.each(orderMenuItems,function(e,v){
-                                                // console.log('----------------');
-                                                // console.log(v);
-                                                // console.log('----------------');
-                                                //addTransSalesModifiers($sales_id=null,$line_id=null,$menu_id=null,$mod_id=null,$price=0,$qty=0)
-                                                // console.log(remoteHost+"clickPlatev2/app_orders/addTransSalesMenu/"+last_order_header_id+"/"+v.line_id+"/"+v.menu_id+"/"+v.menu_cost+"/"+v.order_qty);
-                                                $.ajax({
-                                                    url : remoteHost+"clickPlatev2/app_orders/addTransSalesMenu/"+last_order_header_id+"/"+v.line_id+"/"+v.menu_id+"/"+v.menu_cost+"/"+v.order_qty,
-                                                    type: 'POST',
-                                                    dataType : "json",
-                                                    cache: false,
-                                                    data: {"name":"JSON_Request"},
-                                                    success:function(data1) {
-                                                        // console.log('LAST SALES::'+last_sales_menu_id);
-                                                        // alert('LAST SALES:'+last_sales_menu_id);
-                                                        var orderCart = sessionStorage.order_header;
-                                                        var res_id = sessionStorage.res_id;
-                                                        if(typeof orderCart !== "undefined") {
-                                                            var last_sales_menu_id = data1.id;
+                                        // orderMenuItems = sessionStorage.orderCart;
+                                        // if(typeof orderMenuItems !== 'undefined' && orderMenuItems !== null) {
+                                            orderMenuItems = JSON.parse(orderMenuItems);
+                                            console.log(orderMenuItems);
+                                            if(orderMenuItems.length > 0){
+                                                $.each(orderMenuItems,function(e,v){
+                                                    // console.log('----------------');
+                                                    // console.log(v);
+                                                    // console.log('----------------');
+                                                    //addTransSalesModifiers($sales_id=null,$line_id=null,$menu_id=null,$mod_id=null,$price=0,$qty=0)
+                                                    // console.log(remoteHost+"clickPlatev2/app_orders/addTransSalesMenu/"+last_order_header_id+"/"+v.line_id+"/"+v.menu_id+"/"+v.menu_cost+"/"+v.order_qty);
+                                                    $.ajax({
+                                                        url : remoteHost+"clickPlatev2/app_orders/addTransSalesMenu/"+last_order_header_id+"/"+v.line_id+"/"+v.menu_id+"/"+v.menu_cost+"/"+v.order_qty,
+                                                        type: 'POST',
+                                                        dataType : "json",
+                                                        cache: false,
+                                                        data: {"name":"JSON_Request"},
+                                                        success:function(data1) {
+                                                            // console.log('LAST SALES::'+last_sales_menu_id);
+                                                            // alert('LAST SALES:'+last_sales_menu_id);
+                                                            var orderCart = sessionStorage.order_header;
+                                                            var res_id = sessionStorage.res_id;
+                                                            if(typeof orderCart !== "undefined") {
+                                                                var last_sales_menu_id = data1.id;
 
-                                                            orderCart = JSON.parse(orderCart);
-                                                            var order_method = sessionStorage.order_method;
-                                                            if(order_method == 'reserve-tbl'){
-                                                                var user_id,user_name,table_no,guest_no,reserve_date,reserve_time,request = '';
-                                                                // addTableOrders($user_id=null,$user_name=null,$table_no=null,$guest_no=null,$reserve_date=null,$reserve_time=null,$request=null)
-                                                                var user_id = sessionStorage.user_id;
-                                                                var res_id = sessionStorage.res_id;
-                                                                var br_id = sessionStorage.br_id;
+                                                                orderCart = JSON.parse(orderCart);
+                                                                var order_method = sessionStorage.order_method;
+                                                                if(order_method == 'reserve-tbl'){
+                                                                    var user_id,user_name,table_no,guest_no,reserve_date,reserve_time,request = '';
+                                                                    // addTableOrders($user_id=null,$user_name=null,$table_no=null,$guest_no=null,$reserve_date=null,$reserve_time=null,$request=null)
+                                                                    var user_id = sessionStorage.user_id;
+                                                                    var res_id = sessionStorage.res_id;
+                                                                    var br_id = sessionStorage.br_id;
 
-                                                                $.each(orderCart,function(k,v){
-                                                                    // console.log(k+' - '+v);
-                                                                    if(k == 'user_name')    user_name = v;
-                                                                    else if(k == 'table_no')    table_no = v;
-                                                                    else if(k == 'guest_no')    guest_no = v;
-                                                                    else if(k == 'reserved_date')    reserve_date = v;
-                                                                    else if(k == 'reserved_start_time')    reserve_time = v;
-                                                                    else if(k == 'special_request')    request = v;
-                                                                });
-                                                                // console.log(remoteHost+"clickPlatev2/app_orders/addTableOrders/"+encodeURIComponent(last_order_header_id)+"/"+encodeURIComponent(res_id)+"/"+encodeURIComponent(branch_id)+"/"+encodeURIComponent(user_id)+"/"+encodeURIComponent(user_name)+"/"+encodeURIComponent(table_no)+"/"+encodeURIComponent(guest_no)+"/"+encodeURIComponent(reserve_date)+"/"+encodeURIComponent(reserve_time)+"/"+encodeURIComponent(request));
-                                                                console.log('RES ID:: '+sessionStorage.res_id);
-                                                                $.ajax({
-                                                                    url : remoteHost+"clickPlatev2/app_orders/addTableOrders/"+encodeURIComponent(last_order_header_id)+"/"+encodeURIComponent(res_id)+"/"+encodeURIComponent(br_id)+"/"+encodeURIComponent(user_id)+"/"+encodeURIComponent(user_name)+"/"+encodeURIComponent(table_no)+"/"+encodeURIComponent(guest_no)+"/"+encodeURIComponent(reserve_date)+"/"+encodeURIComponent(reserve_time)+"/"+encodeURIComponent(request),
-                                                                    type: 'POST',
-                                                                    dataType : "json",
-                                                                    cache: false,
-                                                                    data: {"name":"JSON_Request"},
-                                                                    success:function(data) {
+                                                                    $.each(orderCart,function(k,v){
+                                                                        // console.log(k+' - '+v);
+                                                                        if(k == 'user_name')    user_name = v;
+                                                                        else if(k == 'table_no')    table_no = v;
+                                                                        else if(k == 'guest_no')    guest_no = v;
+                                                                        else if(k == 'reserved_date')    reserve_date = v;
+                                                                        else if(k == 'reserved_start_time')    reserve_time = v;
+                                                                        else if(k == 'special_request')    request = v;
+                                                                    });
+                                                                    // console.log(remoteHost+"clickPlatev2/app_orders/addTableOrders/"+encodeURIComponent(last_order_header_id)+"/"+encodeURIComponent(res_id)+"/"+encodeURIComponent(branch_id)+"/"+encodeURIComponent(user_id)+"/"+encodeURIComponent(user_name)+"/"+encodeURIComponent(table_no)+"/"+encodeURIComponent(guest_no)+"/"+encodeURIComponent(reserve_date)+"/"+encodeURIComponent(reserve_time)+"/"+encodeURIComponent(request));
+                                                                    console.log('RES ID:: '+sessionStorage.res_id);
+                                                                    $.ajax({
+                                                                        url : remoteHost+"clickPlatev2/app_orders/addTableOrders/"+encodeURIComponent(last_order_header_id)+"/"+encodeURIComponent(res_id)+"/"+encodeURIComponent(br_id)+"/"+encodeURIComponent(user_id)+"/"+encodeURIComponent(user_name)+"/"+encodeURIComponent(table_no)+"/"+encodeURIComponent(guest_no)+"/"+encodeURIComponent(reserve_date)+"/"+encodeURIComponent(reserve_time)+"/"+encodeURIComponent(request),
+                                                                        type: 'POST',
+                                                                        dataType : "json",
+                                                                        cache: false,
+                                                                        data: {"name":"JSON_Request"},
+                                                                        success:function(data) {
 
-                                                                    }
-                                                                });
-                                                            }else if(order_method == 'instore'){
-                                                                var user_id,user_name,contact_no,reserve_date,time_from,time_to,function_type,function_type_others,request = '';
-                                                                // addFunctionOrders($user_id=null,$user_name=null,$reserve_date=null,$time_from=null,$time_to=null,$function_type=null,$request=null)
-                                                                var user_id = sessionStorage.user_id;
-                                                                var res_id = sessionStorage.res_id;
-                                                                var br_id = sessionStorage.br_id;
-                                                                $.each(orderCart,function(k,v){
-                                                                    if(k == 'user_name')    user_name = v;
-                                                                    else if(k == 'contact_no')    landline_no = v;
-                                                                    else if(k == 'reserved_date')    reserve_date = v;
-                                                                    else if(k == 'reserved_start_time')    time_from = v;
-                                                                    else if(k == 'reserved_end_time ')    time_to = v;
-                                                                    else if(k == 'function_type')    function_type = v;
-                                                                    else if(k == 'function_type_others')    function_type_others = v;
-                                                                    else if(k == 'special_request')    request = v;
-                                                                });
-                                                                $.ajax({
-                                                                    url : remoteHost+"clickPlatev2/app_orders/addFunctionOrders/"+encodeURIComponent(last_order_header_id)+"/"+encodeURIComponent(res_id)+"/"+encodeURIComponent(br_id)+"/"+encodeURIComponent(user_id)+"/"+encodeURIComponent(user_name)+"/"+encodeURIComponent(contact_no)+"/"+encodeURIComponent(reserve_date)+"/"+encodeURIComponent(time_from)+"/"+encodeURIComponent(time_to)+"/"+encodeURIComponent(function_type)+"/"+encodeURIComponent(function_type_others)+"/"+encodeURIComponent(request),
-                                                                    type: 'POST',
-                                                                    dataType : "json",
-                                                                    cache: false,
-                                                                    data: {"name":"JSON_Request"},
-                                                                    success:function(data) {
+                                                                        }
+                                                                    });
+                                                                }else if(order_method == 'instore'){
+                                                                    var user_id,user_name,contact_no,reserve_date,time_from,time_to,function_type,function_type_others,request = '';
+                                                                    // addFunctionOrders($user_id=null,$user_name=null,$reserve_date=null,$time_from=null,$time_to=null,$function_type=null,$request=null)
+                                                                    var user_id = sessionStorage.user_id;
+                                                                    var res_id = sessionStorage.res_id;
+                                                                    var br_id = sessionStorage.br_id;
+                                                                    $.each(orderCart,function(k,v){
+                                                                        if(k == 'user_name')    user_name = v;
+                                                                        else if(k == 'contact_no')    landline_no = v;
+                                                                        else if(k == 'reserved_date')    reserve_date = v;
+                                                                        else if(k == 'reserved_start_time')    time_from = v;
+                                                                        else if(k == 'reserved_end_time ')    time_to = v;
+                                                                        else if(k == 'function_type')    function_type = v;
+                                                                        else if(k == 'function_type_others')    function_type_others = v;
+                                                                        else if(k == 'special_request')    request = v;
+                                                                    });
+                                                                    $.ajax({
+                                                                        url : remoteHost+"clickPlatev2/app_orders/addFunctionOrders/"+encodeURIComponent(last_order_header_id)+"/"+encodeURIComponent(res_id)+"/"+encodeURIComponent(br_id)+"/"+encodeURIComponent(user_id)+"/"+encodeURIComponent(user_name)+"/"+encodeURIComponent(contact_no)+"/"+encodeURIComponent(reserve_date)+"/"+encodeURIComponent(time_from)+"/"+encodeURIComponent(time_to)+"/"+encodeURIComponent(function_type)+"/"+encodeURIComponent(function_type_others)+"/"+encodeURIComponent(request),
+                                                                        type: 'POST',
+                                                                        dataType : "json",
+                                                                        cache: false,
+                                                                        data: {"name":"JSON_Request"},
+                                                                        success:function(data) {
 
-                                                                    }
-                                                                });
-                                                                // alert('zzzzzzzzzzzzzz');
-                                                            }else if(order_method == 'takeout'){
-                                                                var user_id,user_name,contact_no,reserve_date,reserve_time,request = '';
-                                                                var user_id = sessionStorage.user_id;
-                                                                var res_id = sessionStorage.res_id;
-                                                                var br_id = sessionStorage.br_id;
-                                                                $.each(orderCart,function(k,v){
-                                                                    if(k == 'user_name')    user_name = v;
-                                                                    else if(k == 'contact_no')    contact_no = v;
-                                                                    else if(k == 'reserved_date')    reserve_date = v;
-                                                                    else if(k == 'reserved_time')    reserve_time = v;
-                                                                    else if(k == 'special_request')    request = v;
-                                                                });
-                                                                $.ajax({
-                                                                    url : remoteHost+"clickPlatev2/app_orders/addTakeoutOrders/"+encodeURIComponent(last_order_header_id)+"/"+encodeURIComponent(res_id)+"/"+encodeURIComponent(br_id)+"/"+encodeURIComponent(user_id)+"/"+encodeURIComponent(user_name)+"/"+encodeURIComponent(contact_no)+"/"+encodeURIComponent(reserve_date)+"/"+encodeURIComponent(reserve_time)+"/"+encodeURIComponent(request),
-                                                                    type: 'POST',
-                                                                    dataType : "json",
-                                                                    cache: false,
-                                                                    data: {"name":"JSON_Request"},
-                                                                    success:function(data) {
+                                                                        }
+                                                                    });
+                                                                    // alert('zzzzzzzzzzzzzz');
+                                                                }else if(order_method == 'takeout'){
+                                                                    var user_id,user_name,contact_no,reserve_date,reserve_time,request = '';
+                                                                    var user_id = sessionStorage.user_id;
+                                                                    var res_id = sessionStorage.res_id;
+                                                                    var br_id = sessionStorage.br_id;
+                                                                    $.each(orderCart,function(k,v){
+                                                                        if(k == 'user_name')    user_name = v;
+                                                                        else if(k == 'contact_no')    contact_no = v;
+                                                                        else if(k == 'reserved_date')    reserve_date = v;
+                                                                        else if(k == 'reserved_time')    reserve_time = v;
+                                                                        else if(k == 'special_request')    request = v;
+                                                                    });
+                                                                    $.ajax({
+                                                                        url : remoteHost+"clickPlatev2/app_orders/addTakeoutOrders/"+encodeURIComponent(last_order_header_id)+"/"+encodeURIComponent(res_id)+"/"+encodeURIComponent(br_id)+"/"+encodeURIComponent(user_id)+"/"+encodeURIComponent(user_name)+"/"+encodeURIComponent(contact_no)+"/"+encodeURIComponent(reserve_date)+"/"+encodeURIComponent(reserve_time)+"/"+encodeURIComponent(request),
+                                                                        type: 'POST',
+                                                                        dataType : "json",
+                                                                        cache: false,
+                                                                        data: {"name":"JSON_Request"},
+                                                                        success:function(data) {
 
-                                                                    }
-                                                                });
-                                                            }else if(order_method == 'delivery'){
-                                                                var user_id,user_name,mobile_no,landline_no,floor,street,village,bldg,province,city,landmark,request,reserve_date,reserve_time,payment_method = '';
-                                                                // addDeliveryOrders($user_id=null,$user_name=null,$mobile_no=null,$landline=null,$floor=null,$street=null,$village=null,$bldg=null,$province=null,$city=null,$landmark=null,$request=null,$reserve_date=null,$reserve_time=null,$payment_method=null)
-                                                                var user_id = sessionStorage.user_id;
-                                                                var res_id = sessionStorage.res_id;
-                                                                var br_id = sessionStorage.br_id;
-                                                                $.each(orderCart,function(k,v){
-                                                                    if(k == 'user_name')    user_name = v;
-                                                                    else if(k == 'mobile_no')    mobile_no = v;
-                                                                    else if(k == 'contact_no')    landline_no = v;
-                                                                    else if(k == 'del_floor')    floor = v;
-                                                                    else if(k == 'del_street')    street = v;
-                                                                    else if(k == 'del_village')    village = v;
-                                                                    else if(k == 'del_bldg')    bldg = v;
-                                                                    else if(k == 'del_province')    province = v;
-                                                                    else if(k == 'del_city')    city = v;
-                                                                    else if(k == 'del_landmark')    landmark = v;
-                                                                    else if(k == 'special_request')    request = v;
-                                                                    else if(k == 'reserved_date')    reserve_date = v;
-                                                                    else if(k == 'reserved_start_time')    reserve_time = v;
-                                                                    else if(k == 'payment_method')    payment_method = v;
-                                                                });
-                                                                $.ajax({
-                                                                    url : remoteHost+"clickPlatev2/app_orders/addDeliveryOrders/"+encodeURIComponent(last_order_header_id)+"/"+encodeURIComponent(res_id)+"/"+encodeURIComponent(br_id)+"/"+encodeURIComponent(user_id)+"/"+encodeURIComponent(user_name)+"/"+encodeURIComponent(mobile_no)+"/"+encodeURIComponent(landline_no)+"/"+encodeURIComponent(request)+"/"+encodeURIComponent(reserve_date)+"/"+encodeURIComponent(reserve_time)+"/"+encodeURIComponent(payment_method),
-                                                                    type: 'POST',
-                                                                    dataType : "json",
-                                                                    cache: false,
-                                                                    data: {"name":"JSON_Request"},
-                                                                    success:function(data) {
-                                                                        var order_id = data.id;
-                                                                         $.ajax({
-                                                                            url : remoteHost+"clickPlatev2/app_orders/addDelAdd/"+order_id+"/"+encodeURIComponent(floor)+"/"+encodeURIComponent(street)+"/"+encodeURIComponent(village)+"/"+encodeURIComponent(bldg)+"/"+encodeURIComponent(province)+"/"+encodeURIComponent(city)+"/"+encodeURIComponent(landmark),
+                                                                        }
+                                                                    });
+                                                                }else if(order_method == 'delivery'){
+                                                                    var user_id,user_name,mobile_no,landline_no,floor,street,village,bldg,province,city,landmark,request,reserve_date,reserve_time,payment_method = '';
+                                                                    // addDeliveryOrders($user_id=null,$user_name=null,$mobile_no=null,$landline=null,$floor=null,$street=null,$village=null,$bldg=null,$province=null,$city=null,$landmark=null,$request=null,$reserve_date=null,$reserve_time=null,$payment_method=null)
+                                                                    var user_id = sessionStorage.user_id;
+                                                                    var res_id = sessionStorage.res_id;
+                                                                    var br_id = sessionStorage.br_id;
+                                                                    $.each(orderCart,function(k,v){
+                                                                        if(k == 'user_name')    user_name = v;
+                                                                        else if(k == 'mobile_no')    mobile_no = v;
+                                                                        else if(k == 'contact_no')    landline_no = v;
+                                                                        else if(k == 'del_floor')    floor = v;
+                                                                        else if(k == 'del_street')    street = v;
+                                                                        else if(k == 'del_village')    village = v;
+                                                                        else if(k == 'del_bldg')    bldg = v;
+                                                                        else if(k == 'del_province')    province = v;
+                                                                        else if(k == 'del_city')    city = v;
+                                                                        else if(k == 'del_landmark')    landmark = v;
+                                                                        else if(k == 'special_request')    request = v;
+                                                                        else if(k == 'reserved_date')    reserve_date = v;
+                                                                        else if(k == 'reserved_start_time')    reserve_time = v;
+                                                                        else if(k == 'payment_method')    payment_method = v;
+                                                                    });
+                                                                    $.ajax({
+                                                                        url : remoteHost+"clickPlatev2/app_orders/addDeliveryOrders/"+encodeURIComponent(last_order_header_id)+"/"+encodeURIComponent(res_id)+"/"+encodeURIComponent(br_id)+"/"+encodeURIComponent(user_id)+"/"+encodeURIComponent(user_name)+"/"+encodeURIComponent(mobile_no)+"/"+encodeURIComponent(landline_no)+"/"+encodeURIComponent(request)+"/"+encodeURIComponent(reserve_date)+"/"+encodeURIComponent(reserve_time)+"/"+encodeURIComponent(payment_method),
+                                                                        type: 'POST',
+                                                                        dataType : "json",
+                                                                        cache: false,
+                                                                        data: {"name":"JSON_Request"},
+                                                                        success:function(data) {
+                                                                            var order_id = data.id;
+                                                                             $.ajax({
+                                                                                url : remoteHost+"clickPlatev2/app_orders/addDelAdd/"+order_id+"/"+encodeURIComponent(floor)+"/"+encodeURIComponent(street)+"/"+encodeURIComponent(village)+"/"+encodeURIComponent(bldg)+"/"+encodeURIComponent(province)+"/"+encodeURIComponent(city)+"/"+encodeURIComponent(landmark),
+                                                                                type: 'POST',
+                                                                                dataType : "json",
+                                                                                cache: false,
+                                                                                data: {"name":"JSON_Request"},
+                                                                                success:function(data1) {
+                                                                                }
+                                                                            });
+                                                                            // +"/"+encodeURIComponent(landline)+"/"+encodeURIComponent(floor)+"/"+encodeURIComponent(street)+"/"+encodeURIComponent(village)+"/"+encodeURIComponent(bldg)+"/"+encodeURIComponent(province)+"/"+encodeURIComponent(city)+"/"+encodeURIComponent(landmark)
+
+                                                                        }
+                                                                    });
+                                                                }else{
+                                                                    //Here goes nothing...
+                                                                }
+                                                            }
+
+
+
+                                                            var user_id = sessionStorage.user_id;
+                                                            if(typeof user_id !== 'undefined'){
+                                                                orderModCart = sessionStorage.orderModCart;
+                                                                orderModCart = JSON.parse(orderModCart);
+                                                                // console.log(last_sales_menu_id);
+                                                                if(orderModCart.length > 0){
+                                                                    $.each(orderModCart,function(e1,v1){
+                                                                        // console.log(remoteHost+"clickPlatev2/app_orders/addTransSalesModifiers/"+last_sales_menu_id+"/"+v.line_id+"/"+v.menu_id+"/"+v1.mod_id+"/"+v.menu_cost+"/"+Number(1));
+                                                                        $.ajax({
+                                                                            url : remoteHost+"clickPlatev2/app_orders/addTransSalesModifiers/"+last_sales_menu_id+"/"+v.line_id+"/"+v.menu_id+"/"+v1.mod_id+"/"+v.menu_cost+"/"+Number(1),
                                                                             type: 'POST',
                                                                             dataType : "json",
                                                                             cache: false,
                                                                             data: {"name":"JSON_Request"},
                                                                             success:function(data1) {
+                                                                                // console.log(data1);
                                                                             }
                                                                         });
-                                                                        // +"/"+encodeURIComponent(landline)+"/"+encodeURIComponent(floor)+"/"+encodeURIComponent(street)+"/"+encodeURIComponent(village)+"/"+encodeURIComponent(bldg)+"/"+encodeURIComponent(province)+"/"+encodeURIComponent(city)+"/"+encodeURIComponent(landmark)
-
-                                                                    }
-                                                                });
-                                                            }else{
-                                                                //Here goes nothing...
-                                                            }
-                                                        }
-
-
-
-                                                        var user_id = sessionStorage.user_id;
-                                                        if(typeof user_id !== 'undefined'){
-                                                            orderModCart = sessionStorage.orderModCart;
-                                                            orderModCart = JSON.parse(orderModCart);
-                                                            // console.log(last_sales_menu_id);
-                                                            if(orderModCart.length > 0){
-                                                                $.each(orderModCart,function(e1,v1){
-                                                                    // console.log(remoteHost+"clickPlatev2/app_orders/addTransSalesModifiers/"+last_sales_menu_id+"/"+v.line_id+"/"+v.menu_id+"/"+v1.mod_id+"/"+v.menu_cost+"/"+Number(1));
-                                                                    $.ajax({
-                                                                        url : remoteHost+"clickPlatev2/app_orders/addTransSalesModifiers/"+last_sales_menu_id+"/"+v.line_id+"/"+v.menu_id+"/"+v1.mod_id+"/"+v.menu_cost+"/"+Number(1),
-                                                                        type: 'POST',
-                                                                        dataType : "json",
-                                                                        cache: false,
-                                                                        data: {"name":"JSON_Request"},
-                                                                        success:function(data1) {
-                                                                            // console.log(data1);
-                                                                        }
                                                                     });
-                                                                });
-                                                                sessionStorage.removeItem('orderCart');
-                                                                sessionStorage.removeItem('orderModCart');
-                                                                sessionStorage.removeItem('order_header');
-                                                            }else{
-                                                                sessionStorage.removeItem('orderCart');
-                                                                sessionStorage.removeItem('orderModCart');
-                                                                sessionStorage.removeItem('order_header');
+                                                                    // sessionStorage.removeItem('orderCart');
+                                                                    // sessionStorage.removeItem('orderModCart');
+                                                                    // sessionStorage.removeItem('order_header');
+                                                                }else{
+                                                                    // sessionStorage.removeItem('orderCart');
+                                                                    // sessionStorage.removeItem('orderModCart');
+                                                                    // sessionStorage.removeItem('order_header');
+                                                                }
+                                                                window.location = 'final.html';
                                                             }
-                                                            window.location = 'final.html';
-                                                        }
-                                                        else{
-                                                            window.location = 'login_form.html';
-                                                            sessionStorage.prevURL = 'checkout';
-                                                        }
+                                                            else{
+                                                                window.location = 'login_form.html';
+                                                                sessionStorage.prevURL = 'checkout';
+                                                            }
 
-                                                    }
+                                                        }
+                                                    });
                                                 });
-                                            });
-                                        }
-                                    }
-                                    else{
-                                        sessionStorage.removeItem('orderCart');
-                                        sessionStorage.removeItem('orderModCart');
-                                        sessionStorage.removeItem('order_header');
-                                        window.location = 'final.html';
-                                    }
+                                            }
+                                        // }
+                                        // else{
+                                            // sessionStorage.removeItem('orderCart');
+                                            // sessionStorage.removeItem('orderModCart');
+                                            // sessionStorage.removeItem('order_header');
+                                            // window.location = 'final.html';
+                                        // }
 
-                                }
-                            });
-
+                                    }
+                                });
+                            }
                             // sessionStorage.orderCart = sessionStorage.orderModCart = sessionStorage.order_header = '';
                             // localStorage.removeItem('orderCart');
                             // localStorage.removeItem('orderModCart');

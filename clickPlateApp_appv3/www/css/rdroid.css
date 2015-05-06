@@ -47,13 +47,13 @@
   margin: 5px;
 }
 .view-div .ui-body .view-title{
-  position:absolute; /* absolute position (so we can position it where we want)*/  
-  bottom:0px; /* position will be on bottom */  
-  left:0px;  
-  width:100%;  
-  font-size:0.8em;  
-  color:white;  
-  /* styling bellow */  
+  position:absolute; /* absolute position (so we can position it where we want)*/
+  bottom:0px; /* position will be on bottom */
+  left:0px;
+  width:100%;
+  font-size:0.8em;
+  color:white;
+  /* styling bellow */
   background: -moz-linear-gradient(top,  rgba(0,0,0,0) 0%, rgba(0,0,0,0.65) 100%); /* FF3.6+ */
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(100%,rgba(0,0,0,0.65))); /* Chrome,Safari4+ */
   background: -webkit-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%); /* Chrome10+,Safari5.1+ */
@@ -92,18 +92,18 @@
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    border: none;
+    border: 1px solid black;
     cursor: pointer;
     background-color: #f9f9f9;
 }
 .tile-div .ui-body .tile-title{
-  position:absolute; /* absolute position (so we can position it where we want)*/  
-  bottom:0px; /* position will be on bottom */  
-  left:0px;  
-  width:100%;  
-  font-size:0.8em;  
-  color:white;  
-  /* styling bellow */  
+  position:absolute; /* absolute position (so we can position it where we want)*/
+  bottom:0px; /* position will be on bottom */
+  left:0px;
+  width:100%;
+  font-size:0.8em;
+  color:white;
+  /* styling bellow */
   background: -moz-linear-gradient(top,  rgba(0,0,0,0) 0%, rgba(0,0,0,0.65) 100%); /* FF3.6+ */
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(100%,rgba(0,0,0,0.65))); /* Chrome,Safari4+ */
   background: -webkit-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%); /* Chrome10+,Safari5.1+ */
@@ -111,6 +111,9 @@
   background: -ms-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%); /* IE10+ */
   background: linear-gradient(to bottom,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%); /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#a6000000',GradientType=0 ); /* IE6-9 */
+  opacity: 0.8;
+  border-radius: 0 0 5px 5px;
+  text-align:center;
 }
 .tile-div .ui-body .tile-title p{
   margin: 8px;
@@ -150,8 +153,8 @@
     .tile-div .ui-body .tile-bg{
         min-height: 11em;
     }
-    .tile-div .ui-body .tile-title{ 
-      font-size:.8em;  
+    .tile-div .ui-body .tile-title{
+      font-size:.8em;
     }
 }
 /* 2nd breakpoint - Float all, 50/25/25 */
@@ -203,8 +206,8 @@
     .tile-div .ui-body .tile-bg{
         min-height: 12em;
     }
-    .tile-div .ui-body .tile-title{ 
-      font-size:.9em;  
+    .tile-div .ui-body .tile-title{
+      font-size:.9em;
     }
 }
 /* 3rd breakpoint - Bump up font size at very wide screens */
@@ -232,7 +235,7 @@
     .tile-div .ui-body .tile-bg{
         min-height: 14em;
     }
-    .tile-div .ui-body .tile-title{ 
-      font-size:125%;  
+    .tile-div .ui-body .tile-title{
+      font-size:125%;
     }
 }

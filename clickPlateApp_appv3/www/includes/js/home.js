@@ -229,9 +229,9 @@ $(document).ready(function() {
                     console.log(data.resto_name);
                     sessionStorage.res_name = '';
                     sessionStorage.res_name = data.resto_name;
+                    window.location = 'menu.html';
                   }
                 });
-                window.location = 'menu.html';
             });
             body.appendTo(main);
             $('#brands-con').append(main);

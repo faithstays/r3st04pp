@@ -79,11 +79,11 @@ $(document).ready(function() {
 
     $.each(search,function(k,v){
      //  console.log('resid '+v.res_id);
-	    // console.log('img '+v.res_image);
+      // console.log('img '+v.res_image);
       // item += '<li id="btn" data-id="'+v.res_id+'" data-name="'+v.res_name+'" data-inset="true"><a href="#" id="restaurant_id" data-r="'+v.res_id+'"><img src="'+remoteHost+'resto/uploads/'+v.res_id+'/'+v.res_image+'" class="ui-li-thumb" style="position: absolute;left: 1px;top: 0;max-height: 60px;max-width: 60px;"><h3 class="ui-li-heading">'+(v.res_name).toUpperCase()+'</h3><p class="ui-li-desc"><strong>'+v.res_type+'</strong></p><span style="position:relative;font-size:4px !important;" /><img src="img/icons/coffee.png"/><span style="font-size:12px;">'+v.res_desc+'</span></a></li>';
-    	// if(v.res_image == null) img_src = remoteHost+"/clickPlatev2/img/noimage.png";
+      // if(v.res_image == null) img_src = remoteHost+"/clickPlatev2/img/noimage.png";
      //  else img_src = remoteHost+'resto/uploads/'+v.res_id+'/'+v.res_image;
-
+      item += '<li id="btn_'+v.res_id+'" data-id="'+v.res_id+'" data-name="'+v.res_name+'" data-inset="true"><a href="#" id="restaurant_id" data-r="'+v.res_id+'"><img id="img_'+v.res_id+'" class="ui-li-thumb" style="position: absolute;left: 1px;top: 0;max-height: 60px;max-width: 60px;"><h3 class="ui-li-heading">'+(v.res_name).toUpperCase()+'</h3><p class="ui-li-desc"><strong>'+v.res_type+'</strong></p><span style="position:relative;font-size:4px !important;" /><span style="font-size:12px;"><strong>Description: </strong>'+v.res_desc+'</span></a></li>';
       $.post(remoteHost+"clickPlatev2/get/resto_logos/"+v.res_id,function(data){
           $.each(data,function(resto_id,val){
               console.log(val.path);
@@ -92,18 +92,32 @@ $(document).ready(function() {
                   // console.log(img_path);
                   // subHeader += '<img src="'+img_path+'" class="ui-li-thumb"><input type="hidden" id="backing6"><div id="rateit6" data-rateit-ispreset="true" data-rateit-readonly="true"><h2 id="compName" style="white-space : normal;">'+res_name+'</h2><p style="white-space : normal;">';
 
+              var img_src = '';
+              if(typeof(sessionStorage.res_img_path) !== "undefined")
+                // img_src = sessionStorage.res_img_path;
+                img_src = remoteHost+'clickPlatev2/uploads/'+v.res_id+'/logo.png';
+              else
+                img_src = remoteHost+"/clickPlatev2/img/noimage.png";
+
+              // var res_id = sessionStorage.res_id;
+              console.log(resto_id);
+              $('#img_'+resto_id).attr('src',img_src);
+              // $("#btn_1").html('sdfsdf');
+              // item += '<li id="btn" data-id="'+v.res_id+'" data-name="'+v.res_name+'" data-inset="true"><a href="#" id="restaurant_id" data-r="'+v.res_id+'"><img src="'+img_src+'" class="ui-li-thumb" style="position: absolute;left: 1px;top: 0;max-height: 60px;max-width: 60px;"><h3 class="ui-li-heading">'+(v.res_name).toUpperCase()+'</h3><p class="ui-li-desc"><strong>'+v.res_type+'</strong></p><span style="position:relative;font-size:4px !important;" /><span style="font-size:12px;"><strong>Description: </strong>'+v.res_desc+'</span></a></li>';
+
+
               // }
           });
       });
 
-      var img_src = '';
-      if(typeof(sessionStorage.res_img_path) !== "undefined")
-        // img_src = sessionStorage.res_img_path;
-        img_src = remoteHost+'clickPlatev2/uploads/'+v.res_id+'/logo.png';
-      else
-        img_src = remoteHost+"/clickPlatev2/img/noimage.png";
+      // var img_src = '';
+      // if(typeof(sessionStorage.res_img_path) !== "undefined")
+      //   // img_src = sessionStorage.res_img_path;
+      //   img_src = remoteHost+'clickPlatev2/uploads/'+v.res_id+'/logo.png';
+      // else
+      //   img_src = remoteHost+"/clickPlatev2/img/noimage.png";
 
-      item += '<li id="btn" data-id="'+v.res_id+'" data-name="'+v.res_name+'" data-inset="true"><a href="#" id="restaurant_id" data-r="'+v.res_id+'"><img src="'+img_src+'" class="ui-li-thumb" style="position: absolute;left: 1px;top: 0;max-height: 60px;max-width: 60px;"><h3 class="ui-li-heading">'+(v.res_name).toUpperCase()+'</h3><p class="ui-li-desc"><strong>'+v.res_type+'</strong></p><span style="position:relative;font-size:4px !important;" /><span style="font-size:12px;"><strong>Description: </strong>'+v.res_desc+'</span></a></li>';
+      // item += '<li id="btn_"'+v.res_id+' data-id="'+v.res_id+'" data-name="'+v.res_name+'" data-inset="true"><a href="#" id="restaurant_id" data-r="'+v.res_id+'"><img src="'+img_src+'" class="ui-li-thumb" style="position: absolute;left: 1px;top: 0;max-height: 60px;max-width: 60px;"><h3 class="ui-li-heading">'+(v.res_name).toUpperCase()+'</h3><p class="ui-li-desc"><strong>'+v.res_type+'</strong></p><span style="position:relative;font-size:4px !important;" /><span style="font-size:12px;"><strong>Description: </strong>'+v.res_desc+'</span></a></li>';
     });
 
    	$('#mylist').delegate('li', 'click', function () {
